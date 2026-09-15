@@ -1,15 +1,100 @@
-async function loadData() {
-  try {
-    // Ambil file data.json yang dibuat oleh GitHub Actions
-    const response = await fetch('./data.json');
-    const result = await response.json();
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Info Real-time Pelindo</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f4f6f9;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    h1 {
+      font-size: 1.5rem;
+      color: #1e3a8a;
+      margin-top: 0;
+    }
+    .status-bar {
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .table-responsive {
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid #e5e7eb;
+      padding: 10px 12px;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+    th {
+      background-color: #f3f4f6;
+    }
+    #loading {
+      color: #2563eb;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
 
-    // Tampilkan data ke HTML
-    document.getElementById('data-container').innerText = JSON.stringify(result, null, 2);
-    document.getElementById('loading').style.display = 'none';
-  } catch (error) {
-    document.getElementById('loading').innerText = 'Data belum tersedia.';
-  }
-}
+  <div class="container">
+    <h1>Informasi & Jadwal Operasional Pelindo</h1>
+    <div class="status-bar" id="status-bar">
+      Status: <span id="loading">Memuat data terbaru...</span>
+    </div>
 
-loadData();
+    <div class="table-responsive" id="data-container"></div>
+  </div>
+
+  <script>
+    async function fetchPelindoData() {
+      try {
+        // Mengambil file data.json yang dihasilkan otomatis oleh GitHub Actions
+        const response = await fetch('./data.json?cache_bypass=' + new Date().getTime());
+        if (!response.ok) {
+          throw new Error('File data.json belum tersedia.');
+        }
+
+        const result = await response.json();
+
+        // Update waktu pembaruan
+        document.getElementById('status-bar').innerHTML = `
+          Terakhir diperbarui: <strong>${result.updated_at}</strong>
+        `;
+
+        // Tampilkan isi tabel
+        document.getElementById('data-container').innerHTML = result.data_html;
+
+      } catch (error) {
+        document.getElementById('status-bar').innerHTML = `
+          <span style="color: #dc2626;">Gagal memuat data. Sistem sedang menyiapkan data awal...</span>
+        `;
+        console.error(error);
+      }
+    }
+
+    // Jalankan saat web dibuka
+    fetchPelindoData();
+  </script>
+</body>
+</html>
