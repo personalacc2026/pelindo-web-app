@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Info Real-time Pelindo</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #f4f4f9; }
+    .card { background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+  </style>
+</head>
+<body>
+  <h2>Jadwal & Informasi Kapal Pelindo</h2>
+  <div id="loading">Mengambil data terbaru...</div>
+  <div id="data-container" class="card" style="display:none;"></div>
+
+  <script>
+    // URL API atau Endpoint Publik Pelindo (Ganti dengan endpoint/URL target)
+    const pelindoUrl = 'https://idpcs.pelindo.co.id/apex/f?p=167:14';
+    
+    // Menggunakan CORS Proxy jika domain Pelindo memblokir request direct dari browser
+    const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(pelindoUrl);
+
+    async function loadData() {
+      try {
+        const response = await fetch(proxyUrl);
+        const htmlText = await response.text();
+
+        // Mengolah data HTML/JSON yang didapat dari Pelindo
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlText, 'text/html');
+
+        // Contoh: Mengambil konten tabel dari halaman Pelindo
+        const table = doc.querySelector('table'); 
+
+        if (table) {
+          document.getElementById('data-container').innerHTML = table.outerHTML;
+        } else {
+          document.getElementById('data-container').innerText = 'Gagal menemukan struktur tabel data.';
+        }
+
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('data-container').style.display = 'block';
+      } catch (error) {
+        document.getElementById('loading').innerText = 'Gagal mengambil data dari Pelindo.';
+        console.error(error);
+      }
+    }
+
+    // Jalankan fungsi saat web dibuka
+    loadData();
+  </script>
+</body>
+</html>
