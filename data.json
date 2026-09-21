@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-21 02:03:58 WIB",
+  "updated_at": "2026-09-21 04:03:58 WIB",
   "status": "error",
   "data_html": "<p>Gagal mengambil data dari Pelindo: 502 Server Error: Bad Gateway for url: https://idpcs.pelindo.co.id/apex/f?p=167:14&p167_max_rows=1000&pgR_max_rows=1000&pgR_min_row=1</p>"
 }
