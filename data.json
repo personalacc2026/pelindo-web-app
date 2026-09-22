@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-21 22:04:21 WIB",
+  "updated_at": "2026-09-22 00:05:50 WIB",
   "status": "error",
   "data_html": "<p>Gagal mengambil data dari Pelindo: HTTPSConnectionPool(host='idpcs.pelindo.co.id', port=443): Read timed out. (read timeout=30)</p>"
 }
