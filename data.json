@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-26 18:04:42 WIB",
+  "updated_at": "2026-09-26 20:03:51 WIB",
   "status": "error",
-  "data_html": "<p>Gagal mengambil data dari Pelindo: 404 Client Error: Not found for url: https://idpcs.pelindo.co.id/apex/f?p=167:14&p167_max_rows=1000&pgR_max_rows=1000&pgR_min_row=1</p>"
+  "data_html": "<p>Gagal mengambil data dari Pelindo: HTTPSConnectionPool(host='idpcs.pelindo.co.id', port=443): Read timed out. (read timeout=30)</p>"
 }
